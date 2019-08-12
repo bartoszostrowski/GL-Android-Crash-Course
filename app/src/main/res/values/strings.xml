@@ -1,3 +1,15 @@
 <resources>
     <string name="app_name">GL Android Crash Course</string>
+
+    <string name="no_of_votes">Votes: %d</string>
+
+    <string name="star_0">Be the first to rate</string>
+    <string name="star_1">Total waste of time</string>
+    <string name="star_2">I have seen worse</string>
+    <string name="star_3">So-so</string>
+    <string name="star_4">Good</string>
+    <string name="star_5">Super</string>
+    <string name="button_reset">Reset</string>
+    <string name="button_dislike">Dislike</string>
+    <string name="button_like">Like</string>
 </resources>
