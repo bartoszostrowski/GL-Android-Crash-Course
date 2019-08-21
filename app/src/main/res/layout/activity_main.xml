@@ -1,15 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:bind="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
         <import type="pl.bartoszostrowski.glandroidcrashcourse.viewmodel.MainViewModel" />
-
         <import type="pl.bartoszostrowski.glandroidcrashcourse.Utils" />
-
         <variable
             name="model"
             type="pl.bartoszostrowski.glandroidcrashcourse.viewmodel.MainViewModel" />
@@ -87,7 +83,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textViewMovieTitle"
-            tools:rating="4" />
+            tools:rating="4"/>
 
         <TextView
             android:id="@+id/textViewNoOfVotes"
@@ -101,7 +97,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textViewRating"
-            tools:text="Votes: 5" />
+            tools:text="Votes: 5"
+            android:visibility="gone"/>
 
         <Button
             android:id="@+id/buttonReset"
@@ -133,18 +130,21 @@
             app:layout_constraintTop_toBottomOf="@+id/ratingBar"
             tools:text="@string/star_0" />
 
-        <include
-            layout="@layout/rating"
-            android:layout_width="wrap_content"
+        <TextView
+            android:id="@+id/textViewSummary"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
-            android:visibility="gone"
+            android:ellipsize="end"
+            android:text="@{model.summary}"
+            android:textColor="@android:color/black"
+            android:textSize="21sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageViewPoster"
-            bind:model="@{model}" />
+            app:layout_constraintTop_toBottomOf="@+id/textViewRating"
+            tools:text="Summary" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

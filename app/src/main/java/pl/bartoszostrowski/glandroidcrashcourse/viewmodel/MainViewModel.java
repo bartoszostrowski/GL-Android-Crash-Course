@@ -7,21 +7,30 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
-public class MainViewModel extends AndroidViewModel {
+import pl.bartoszostrowski.glandroidcrashcourse.service.model.Movie;
+import pl.bartoszostrowski.glandroidcrashcourse.service.repository.MovieDatabaseSource;
+import pl.bartoszostrowski.glandroidcrashcourse.service.repository.MovieRepository;
+
+public class MainViewModel extends AndroidViewModel implements MovieDatabaseSource.GetMovieCallback {
     private static final String TAG = "MainActivity";
 
-//    public int noOfVotes = 0;
-//    public int totalPoints = 0;
+    private MovieRepository mMovieRepository;
 
     public MutableLiveData<Integer> noOfVotesLive;
 
     public MutableLiveData<Integer> totalPointsLive;
 
-    public MainViewModel(@NonNull Application application) {
+    public MutableLiveData<String> summary;
+
+    public MainViewModel(@NonNull Application application, MovieRepository movieRepository) {
         super(application);
+
+        mMovieRepository = movieRepository;
 
         totalPointsLive = new MutableLiveData<>();
         noOfVotesLive = new MutableLiveData<>();
+
+        summary = new MutableLiveData<>();
 
         totalPointsLive.setValue(0);
         noOfVotesLive.setValue(0);
@@ -30,11 +39,6 @@ public class MainViewModel extends AndroidViewModel {
     public void onVoteUp() {
         Log.d(TAG, "onVoteUp: ");
 
-        // Increase number of votes and total points
-//        noOfVotes++;
-//        totalPoints++;
-
-        //LiveData
         noOfVotesLive.setValue(noOfVotesLive.getValue() + 1);
         totalPointsLive.setValue(totalPointsLive.getValue() + 1);
     }
@@ -42,10 +46,6 @@ public class MainViewModel extends AndroidViewModel {
     public void onVoteDown() {
         Log.d(TAG, "onVoteDown: ");
 
-        // Increase number of votes only
-//        noOfVotes++;
-
-        //LiveData
         noOfVotesLive.setValue(noOfVotesLive.getValue() + 1);
     }
 
@@ -53,5 +53,20 @@ public class MainViewModel extends AndroidViewModel {
         Log.d(TAG, "onReset: ");
         noOfVotesLive.setValue(0);
         totalPointsLive.setValue(0);
+    }
+
+    public void getSummary(String id) {
+        mMovieRepository.getMovieById(id, this);
+    }
+
+    @Override
+    public void onMovieLoaded(Movie movie) {
+        Log.d(TAG, "onMovieLoaded: Overview = " + movie.getOverview());
+        summary.setValue(movie.getTagline());
+    }
+
+    @Override
+    public void onMovieNotAvailable() {
+        summary.setValue("Description not available");
     }
 }
