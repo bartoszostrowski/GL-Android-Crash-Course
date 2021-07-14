@@ -32,27 +32,27 @@ public class MainViewModel extends AndroidViewModel implements MovieDatabaseSour
 
         summary = new MutableLiveData<>();
 
-        totalPointsLive.setValue(0);
-        noOfVotesLive.setValue(0);
+        totalPointsLive.postValue(0);
+        noOfVotesLive.postValue(0);
     }
 
     public void onVoteUp() {
         Log.d(TAG, "onVoteUp: ");
 
-        noOfVotesLive.setValue(noOfVotesLive.getValue() + 1);
-        totalPointsLive.setValue(totalPointsLive.getValue() + 1);
+        noOfVotesLive.postValue(noOfVotesLive.getValue() + 1);
+        totalPointsLive.postValue(totalPointsLive.getValue() + 1);
     }
 
     public void onVoteDown() {
         Log.d(TAG, "onVoteDown: ");
 
-        noOfVotesLive.setValue(noOfVotesLive.getValue() + 1);
+        noOfVotesLive.postValue(noOfVotesLive.getValue() + 1);
     }
 
     public void onReset() {
         Log.d(TAG, "onReset: ");
-        noOfVotesLive.setValue(0);
-        totalPointsLive.setValue(0);
+        noOfVotesLive.postValue(0);
+        totalPointsLive.postValue(0);
     }
 
     public void getSummary(String id) {
@@ -61,8 +61,9 @@ public class MainViewModel extends AndroidViewModel implements MovieDatabaseSour
 
     @Override
     public void onMovieLoaded(Movie movie) {
-        Log.d(TAG, "onMovieLoaded: Overview = " + movie.getOverview());
-        summary.setValue(movie.getTagline());
+        //TODO: To be checked why it is crashing
+//        Log.d(TAG, "onMovieLoaded: Overview = " + movie.getOverview());
+//        summary.setValue(movie.getTagline());
     }
 
     @Override
