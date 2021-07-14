@@ -40,14 +40,14 @@ public class MainActivity extends AppCompatActivity {
 
         binding.setLifecycleOwner(this);
 
-        viewModel.noOfVotesLive.observe(this, new Observer<Integer>() {
+        viewModel.getNoOfVotesLive().observe(this, new Observer<Integer>() {
             @Override
             public void onChanged(Integer votes) {
                 Log.d(TAG, "onChanged: No of votes = " + votes);
             }
         });
 
-        viewModel.totalPointsLive.observe(this, new Observer<Integer>() {
+        viewModel.getTotalPointsLive().observe(this, new Observer<Integer>() {
             @Override
             public void onChanged(Integer points) {
                 Log.d(TAG, "onChanged: Total points = " + points);

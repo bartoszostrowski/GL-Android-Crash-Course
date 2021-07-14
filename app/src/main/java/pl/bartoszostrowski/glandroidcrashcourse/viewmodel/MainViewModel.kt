@@ -1,73 +1,65 @@
-package pl.bartoszostrowski.glandroidcrashcourse.viewmodel;
+package pl.bartoszostrowski.glandroidcrashcourse.viewmodel
 
-import android.app.Application;
-import android.util.Log;
+import android.app.Application
+import android.util.Log
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import pl.bartoszostrowski.glandroidcrashcourse.service.model.Movie
+import pl.bartoszostrowski.glandroidcrashcourse.service.repository.MovieDatabaseSource.GetMovieCallback
+import pl.bartoszostrowski.glandroidcrashcourse.service.repository.MovieRepository
 
-import androidx.annotation.NonNull;
-import androidx.lifecycle.AndroidViewModel;
-import androidx.lifecycle.MutableLiveData;
+class MainViewModel(application: Application, private val mMovieRepository: MovieRepository) : AndroidViewModel(application), GetMovieCallback {
 
-import pl.bartoszostrowski.glandroidcrashcourse.service.model.Movie;
-import pl.bartoszostrowski.glandroidcrashcourse.service.repository.MovieDatabaseSource;
-import pl.bartoszostrowski.glandroidcrashcourse.service.repository.MovieRepository;
+    private val _totalPointsLive = MutableLiveData<Int>()
+    val totalPointsLive: LiveData<Int>
+        get() = _totalPointsLive
 
-public class MainViewModel extends AndroidViewModel implements MovieDatabaseSource.GetMovieCallback {
-    private static final String TAG = "MainActivity";
+    private val _noOfVotesLive = MutableLiveData<Int>()
+    val noOfVotesLive: LiveData<Int>
+        get() = _noOfVotesLive
 
-    private MovieRepository mMovieRepository;
+    private val _summary = MutableLiveData<String>()
+    val summary: LiveData<String>
+        get() = _summary
 
-    public MutableLiveData<Integer> noOfVotesLive;
-
-    public MutableLiveData<Integer> totalPointsLive;
-
-    public MutableLiveData<String> summary;
-
-    public MainViewModel(@NonNull Application application, MovieRepository movieRepository) {
-        super(application);
-
-        mMovieRepository = movieRepository;
-
-        totalPointsLive = new MutableLiveData<>();
-        noOfVotesLive = new MutableLiveData<>();
-
-        summary = new MutableLiveData<>();
-
-        totalPointsLive.postValue(0);
-        noOfVotesLive.postValue(0);
+    fun onVoteUp() {
+        Log.d(TAG, "onVoteUp: ")
+        _noOfVotesLive.postValue(_noOfVotesLive.value!! + 1)
+        _totalPointsLive.postValue(_noOfVotesLive.value!! + 1)
     }
 
-    public void onVoteUp() {
-        Log.d(TAG, "onVoteUp: ");
-
-        noOfVotesLive.postValue(noOfVotesLive.getValue() + 1);
-        totalPointsLive.postValue(totalPointsLive.getValue() + 1);
+    fun onVoteDown() {
+        Log.d(TAG, "onVoteDown: ")
+        _noOfVotesLive.postValue(noOfVotesLive.value!! + 1)
     }
 
-    public void onVoteDown() {
-        Log.d(TAG, "onVoteDown: ");
-
-        noOfVotesLive.postValue(noOfVotesLive.getValue() + 1);
+    fun onReset() {
+        Log.d(TAG, "onReset: ")
+        _noOfVotesLive.postValue(0)
+        _totalPointsLive.postValue(0)
     }
 
-    public void onReset() {
-        Log.d(TAG, "onReset: ");
-        noOfVotesLive.postValue(0);
-        totalPointsLive.postValue(0);
+    fun getSummary(id: String) {
+//        mMovieRepository.getMovieById(id, this)
     }
 
-    public void getSummary(String id) {
-        mMovieRepository.getMovieById(id, this);
-    }
-
-    @Override
-    public void onMovieLoaded(Movie movie) {
+    override fun onMovieLoaded(movie: Movie) {
         //TODO: To be checked why it is crashing
 //        Log.d(TAG, "onMovieLoaded: Overview = " + movie.getOverview());
 //        summary.setValue(movie.getTagline());
     }
 
-    @Override
-    public void onMovieNotAvailable() {
-        summary.setValue("Description not available");
+    override fun onMovieNotAvailable() {
+        _summary.value = "Description not available"
+    }
+
+    companion object {
+        private const val TAG = "MainActivity"
+    }
+
+    init {
+        _totalPointsLive.postValue(0)
+        _noOfVotesLive.postValue(0)
     }
 }

@@ -79,7 +79,7 @@ public class MovieRepository {
         return INSTANCE;
     }
 
-    public MutableLiveData<Movie> getMovieById(String id, @NonNull final MovieDatabaseSource.GetMovieCallback callback) {
+    public MutableLiveData<Movie> getMovieById(String id, final MovieDatabaseSource.GetMovieCallback callback) {
         Log.d(TAG, "getMovieById: " + id);
 
         final MutableLiveData<Movie> data = new MutableLiveData<>();
